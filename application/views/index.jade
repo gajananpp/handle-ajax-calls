@@ -2,11 +2,12 @@ extends layout
 
 block content
   input#search(type='search',placeholder='search')
-  br
-  h2
-    a#results(href="#")
-
+  ul#results
+  include template.html
+  
+  
   script(type='text/javascript',src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js')
+  script(type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js")
   script(type='text/javascript',src='/javascripts/main.js')
   
   

@@ -37,22 +37,34 @@ app.get('/searching',function(req,res) {
 "json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
   console.log(url);
 
-
-  request(url,function(err,resp,body) {
-    body = JSON.parse(body);
-
-    if (!body.query.results.RDF.item) {
-      craig = "no results found.Try again.";
-    }
-    else {
-      craig = body.query.results.RDF.item[0]['about'];
-    }
-
-    res.send(craig);
+  requests(url,function(data) {
+    res.send(data);
   });
 
-
 });
+
+function requests(url,callback) {
+  request(url,function(err,resp,body) {
+    body = JSON.parse(body);
+    resultsArray = [];
+
+    if (!body.query.results.RDF.item) {
+      results = "no results found.Try again.";
+      callback(results);
+      console.log(results);
+    }
+    else {
+      results = body.query.results.RDF.item;
+      for (var i = 0; i<results.length; i++) {
+        resultsArray.push({"title" : results[i].title[0],
+        "about" : results[i].about,
+        "desc" : results[i].description});
+      }
+      callback(resultsArray);
+      console.log(resultsArray);
+    }
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
